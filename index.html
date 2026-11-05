@@ -106,7 +106,10 @@
           </a>
 
           <!-- Book Session CTA Button -->
-          <a href="#contact" class="btn btn-gold btn-nav-cta">Book Session</a>
+          <button type="button" class="btn btn-gold btn-nav-cta open-price-popup-btn" id="nav-get-price-btn" aria-label="Get Price Details">
+            <span class="btn-text-full">Get Price</span>
+            <span class="btn-text-short">Price</span>
+          </button>
 
           <!-- Mobile Hamburger Toggle -->
           <button class="hamburger" id="hamburger-btn" aria-label="Toggle Navigation Menu">
@@ -140,6 +143,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
         <span>momentcapturedteam@gmail.com</span>
       </a>
+      <button type="button" class="btn btn-gold open-price-popup-btn" id="drawer-get-price-btn" style="width: 100%; margin: 8px 0 16px; padding: 12px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em;">GET PRICE DETAILS</button>
       <div class="social-links-row" style="margin-top: 10px;">
         <a href="https://www.facebook.com/momentcaptured.in" target="_blank" rel="noopener noreferrer" class="social-btn">Facebook</a>
         <a href="https://www.instagram.com/momentcaptured.in" target="_blank" rel="noopener noreferrer" class="social-btn">Instagram</a>
@@ -195,9 +199,8 @@
           </h1>
 
           <p class="hero-desc">
-            Where profound emotion converges with timeless visual poetry. At <strong>Moment Captured</strong>, 
-            we don’t merely take pictures—we chronicle the unscripted laughter, sacred vows, and soulful glances 
-            that define your legacy.
+            <span class="hero-desc-full">Where profound emotion converges with timeless visual poetry. At <strong>Moment Captured</strong>, we don’t merely take pictures—we chronicle the unscripted laughter, sacred vows, and soulful glances that define your legacy.</span>
+            <span class="hero-desc-mobile">Where profound emotion converges with timeless visual poetry.</span>
           </p>
 
           <div class="hero-cta-group">
@@ -205,9 +208,9 @@
               <span>Explore Our World</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
             </a>
-            <a href="#contact" class="btn btn-outline">
-              <span>Reserve Your Date</span>
-            </a>
+            <button type="button" class="btn btn-outline open-price-popup-btn" data-target-stage="form">
+              <span>Get Price Details</span>
+            </button>
           </div>
 
           <!-- Trust & Legacy Stats Strip -->
@@ -528,7 +531,7 @@
               <span>Full Personal Print & Heritage Rights</span>
             </div>
           </div>
-          <a href="#contact" class="btn btn-outline" style="width: 100%;">Inquire About Availability</a>
+          <button type="button" class="btn btn-outline open-price-popup-btn" data-target-stage="form" style="width: 100%;">Get Price & Availability</button>
         </div>
 
         <!-- Collection 2 (Featured) -->
@@ -567,7 +570,7 @@
               <span>48-Hour Curated Sneak-Peek Teaser</span>
             </div>
           </div>
-          <a href="#contact" class="btn btn-gold" style="width: 100%;">Reserve Wedding Experience</a>
+          <button type="button" class="btn btn-gold open-price-popup-btn" data-target-stage="form" style="width: 100%;">Get Price Details</button>
         </div>
 
         <!-- Collection 3 -->
@@ -601,7 +604,7 @@
               <span>Luxury Boxed USB + Dual Archival Albums</span>
             </div>
           </div>
-          <a href="#contact" class="btn btn-outline" style="width: 100%;">Discuss Destination Vision</a>
+          <button type="button" class="btn btn-outline open-price-popup-btn" data-target-stage="form" style="width: 100%;">Get Destination Pricing</button>
         </div>
       </div>
     </div>
@@ -898,6 +901,139 @@
     <div class="lightbox-content">
       <img src="" alt="Portfolio preview" class="lightbox-img" id="lightbox-img">
       <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       GET PRICE DETAILS POPUP MODAL (Capture the Moment)
+       - Auto-triggers after few seconds on open & when cursor stops hovering
+       - Also opens immediately when clicking "Get Price"
+       - Form with Name, Event Date, WhatsApp No, Gmail
+       - Success popup: "Successfully submitted, our team will contact soon"
+       ========================================================================== -->
+  <div class="price-popup-overlay" id="price-popup-modal" aria-hidden="true">
+    <div class="price-popup-backdrop" id="price-popup-backdrop"></div>
+    
+    <div class="price-popup-card" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+      <!-- Close Button -->
+      <button type="button" class="price-popup-close" id="price-popup-close-btn" aria-label="Close popup">&times;</button>
+
+      <!-- STAGE 1: Visual Offer Card (Inspired by example image) -->
+      <div class="popup-stage" id="popup-stage-offer">
+        <div class="popup-image-banner">
+          <img 
+            src="src/scroll-images/img%20(65).jpg" 
+            alt="Capture the Moment - Wedding &amp; Portrait Photography" 
+            class="popup-banner-img"
+            onerror="this.src='src/scroll-images/img (1).jpg';"
+          >
+          <div class="popup-banner-gradient"></div>
+        </div>
+
+        <div class="popup-body">
+          <h3 class="popup-title" id="popup-title">Capture the Moment</h3>
+          <p class="popup-subtitle">Want to freeze your special moments? Make it happen with us!</p>
+          
+          <div class="popup-actions-stack">
+            <button type="button" class="btn btn-popup-primary" id="popup-goto-form-btn">
+              <span>GET PRICE DETAILS</span>
+            </button>
+            <a href="#portfolio" class="btn btn-popup-secondary" id="popup-goto-portfolio-btn">
+              <span>GET SOME KNOWLEDGE</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 2: Pricing Inquiry Form (Name, Event Date, WhatsApp, Gmail) -->
+      <div class="popup-stage popup-stage-hidden" id="popup-stage-form">
+        <div class="popup-form-header">
+          <button type="button" class="popup-back-btn" id="popup-back-btn" aria-label="Go back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Back</span>
+          </button>
+          <h3 class="popup-form-title">Get Price Details</h3>
+          <p class="popup-form-subtitle">Enter your details to receive our bespoke price catalog &amp; availability.</p>
+        </div>
+
+        <form id="price-inquiry-form" class="popup-form" novalidate>
+          <div class="popup-field-group">
+            <label for="price-name" class="popup-label">Your Name <span class="required-star">*</span></label>
+            <div class="popup-input-wrap">
+              <svg class="popup-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <input type="text" id="price-name" name="name" class="popup-input" placeholder="e.g. Suman &amp; Priya" required autocomplete="name">
+            </div>
+            <span class="field-error-msg" id="price-name-error"></span>
+          </div>
+
+          <div class="popup-field-group">
+            <label for="price-date" class="popup-label">Event Date <span class="required-star">*</span></label>
+            <div class="popup-input-wrap">
+              <svg class="popup-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <input type="date" id="price-date" name="event_date" class="popup-input" required>
+            </div>
+            <span class="field-error-msg" id="price-date-error"></span>
+          </div>
+
+          <div class="popup-field-group">
+            <label for="price-whatsapp" class="popup-label">WhatsApp Number <span class="required-star">*</span></label>
+            <div class="popup-input-wrap">
+              <svg class="popup-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <input type="tel" id="price-whatsapp" name="whatsapp" class="popup-input" placeholder="+91 94756 65668" required autocomplete="tel">
+            </div>
+            <span class="field-error-msg" id="price-whatsapp-error"></span>
+          </div>
+
+          <div class="popup-field-group">
+            <label for="price-gmail" class="popup-label">Gmail / Email Address <span class="required-star">*</span></label>
+            <div class="popup-input-wrap">
+              <svg class="popup-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <input type="email" id="price-gmail" name="email" class="popup-input" placeholder="momentcapturedteam@gmail.com" required autocomplete="email">
+            </div>
+            <span class="field-error-msg" id="price-gmail-error"></span>
+          </div>
+
+          <button type="submit" class="btn btn-popup-primary btn-submit-price" id="popup-submit-btn">
+            <span>SUBMIT DETAILS</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- STAGE 3: Success Popup Confirmation ("Successfully submitted, our team will contact soon") -->
+      <div class="popup-stage popup-stage-hidden" id="popup-stage-success">
+        <div class="popup-success-content">
+          <div class="popup-success-icon-wrap">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          
+          <h3 class="popup-success-title">Successfully Submitted!</h3>
+          <p class="popup-success-desc">
+            Thank you, <strong id="success-user-name">valued guest</strong>! Your details have been received. 
+            <strong>Our team will contact soon</strong> with our bespoke pricing catalog &amp; availability.
+          </p>
+
+          <div class="popup-success-contacts">
+            <a href="tel:+919475665668" class="success-contact-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <span>+91 9475665668</span>
+            </a>
+            <a href="mailto:momentcapturedteam@gmail.com" class="success-contact-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <span>momentcapturedteam@gmail.com</span>
+            </a>
+          </div>
+
+          <div class="popup-success-actions">
+            <a id="popup-whatsapp-direct-link" href="https://wa.me/919475665668" target="_blank" rel="noopener noreferrer" class="btn btn-popup-whatsapp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+              <span>Instant Chat on WhatsApp</span>
+            </a>
+            <button type="button" class="btn btn-popup-done" id="popup-success-done-btn">Done</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

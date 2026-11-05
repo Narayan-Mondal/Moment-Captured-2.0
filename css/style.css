@@ -55,10 +55,11 @@ html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   background-color: var(--bg-dark);
   line-height: 1.65;
   position: relative;
@@ -581,6 +582,13 @@ ul {
   transform: translateY(-1px);
 }
 
+.btn-text-short {
+  display: none;
+}
+.hero-desc-mobile {
+  display: none;
+}
+
 .btn-nav-cta {
   padding: 8px 18px;
   font-size: 0.78rem;
@@ -911,11 +919,13 @@ body.in-cinematic-mode .floating-whatsapp {
 }
 
 .cinematic-sticky-stage {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -926,11 +936,12 @@ body.in-cinematic-mode .floating-whatsapp {
 
 /* Clean Canvas: Zero overlapping widgets or components during animation */
 #cinematic-canvas {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: block;
   background: #000000;
   pointer-events: none;
+  object-fit: cover;
 }
 
 /* Initial Sequence Loader Screen (only shown while caching first frames) */
@@ -1026,8 +1037,8 @@ body.in-cinematic-mode .floating-whatsapp {
 .cinematic-story-container {
   position: absolute;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 103;
 }
@@ -1036,33 +1047,26 @@ body.in-cinematic-mode .floating-whatsapp {
 .hero-stage-content {
   position: absolute;
   top: auto;
-  bottom: 4vh;
+  bottom: 8vh;
   left: 50%;
   transform: translateX(-50%);
-  width: 92%;
-  max-width: 880px;
+  width: 90%;
+  max-width: 920px;
   text-align: center;
   z-index: 103;
   pointer-events: auto;
-  opacity: 1;}
+  opacity: 1;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
 /* ==========================================================================
-   CINEMATIC STORYTELLING OVERLAYS (STRICTLY LOWER BOTTOM):
-   - "at scrolling time put the content on lower bottom"
-   - Zero background box, crisp typography with rich drop-shadows
-   - Positioned strictly in the lower bottom safe band across ALL screens
-   - The photographer's face, sunglasses, camera, and upper body remain 100% visible
+   CINEMATIC STORYTELLING OVERLAYS (DESKTOP RESOLUTION):
+   - Preserves original desktop layout: Step 1 & 3 left, Step 2 right, Step 4 center
+   - Zero background box: clean typography with high-contrast text shadows
+   - Only for small displays (<= 1024px) does content move to lower bottom
    ========================================================================== */
 .cinematic-story-step {
   position: absolute;
-  top: auto !important;
-  bottom: 4vh !important;
-  left: 50% !important;
-  right: auto !important;
-  transform: translateX(-50%) translateY(20px);
-  width: 92% !important;
-  max-width: 760px !important;
-  text-align: center !important;
   background: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -1072,9 +1076,9 @@ body.in-cinematic-mode .floating-whatsapp {
   box-shadow: none !important;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.45s ease;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.5s ease;
   pointer-events: none;
   z-index: 103;
 }
@@ -1082,25 +1086,58 @@ body.in-cinematic-mode .floating-whatsapp {
 .cinematic-story-step.active {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
 
-.cinematic-story-step.pos-left,
-.cinematic-story-step.pos-right,
+/* Desktop Left Side Position (Steps 1 & 3) */
+.cinematic-story-step.pos-left {
+  top: auto;
+  bottom: 8vh;
+  left: 5vw;
+  right: auto;
+  max-width: clamp(280px, 25vw, 380px);
+  text-align: left;
+  transform: translateY(20px);
+}
+.cinematic-story-step.pos-left.active {
+  transform: translateY(0);
+}
+
+/* Desktop Right Side Position (Step 2) */
+.cinematic-story-step.pos-right {
+  top: auto;
+  bottom: 8vh;
+  right: 5vw;
+  left: auto;
+  max-width: clamp(280px, 25vw, 380px);
+  text-align: right;
+  transform: translateY(20px);
+}
+.cinematic-story-step.pos-right.active {
+  transform: translateY(0);
+}
+
+/* Desktop Center Position (Step 4) */
 .cinematic-story-step.pos-center {
-  left: 50% !important;
-  right: auto !important;
-  text-align: center !important;
+  top: auto;
+  bottom: 6vh;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%) translateY(20px);
+  text-align: center;
+  max-width: 600px;
+  width: 90%;
+}
+.cinematic-story-step.pos-center.active {
+  transform: translateX(-50%) translateY(0);
 }
 
 /* Typographic Excellence: Crisp, High Contrast, Legible without box */
 .story-step-tag {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  font-size: clamp(0.72rem, 0.82vw, 0.8rem);
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1111,7 +1148,7 @@ body.in-cinematic-mode .floating-whatsapp {
 
 .story-step-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.3rem, 2.3vw, 2.1rem);
+  font-size: clamp(1.4rem, 2.2vw, 2.1rem);
   font-weight: 500;
   line-height: 1.25;
   color: #ffffff;
@@ -1121,38 +1158,39 @@ body.in-cinematic-mode .floating-whatsapp {
 }
 
 .story-step-desc {
-  font-size: clamp(0.85rem, 1.05vw, 1rem);
-  color: rgba(245, 246, 248, 0.94);
-  line-height: 1.6;
-  margin: 0 auto 14px auto;
-  max-width: 680px;
+  font-size: clamp(0.88rem, 1.05vw, 1.02rem);
+  color: rgba(245, 246, 248, 0.92);
+  line-height: 1.65;
+  margin-bottom: 16px;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 1);
 }
 
 .story-step-meta {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
-
-.pos-right .story-step-meta,
-.pos-left .story-step-meta,
+.pos-right .story-step-meta {
+  justify-content: flex-end;
+}
+.pos-left .story-step-meta {
+  justify-content: flex-start;
+}
 .pos-center .story-step-meta {
-  justify-content: center !important;
+  justify-content: center;
 }
 
 .story-meta-pill {
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 4px 13px;
+  padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(212, 175, 55, 0.45);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(212, 175, 55, 0.4);
   color: var(--accent-gold-light);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
@@ -2054,9 +2092,7 @@ body.in-cinematic-mode .floating-whatsapp {
     display: none; /* Hide long email on medium screens to keep single row */
   }
 
-  /* CRITICAL: Ensure side storytelling text sits in the safe bottom area
-     and NEVER covers the photographer's face/sunglasses on any resolution */
-  .cinematic-story-step,
+  /* SMALL DISPLAY: Place all story text at lower bottom so it NEVER covers face/sunglasses */
   .cinematic-story-step.pos-left,
   .cinematic-story-step.pos-right,
   .cinematic-story-step.pos-center {
@@ -2065,22 +2101,27 @@ body.in-cinematic-mode .floating-whatsapp {
     left: 50% !important;
     right: auto !important;
     width: 90% !important;
-    max-width: 680px !important;
-    transform: translateX(-50%) translateY(15px);
+    max-width: 600px !important;
+    transform: translateX(-50%) translateY(12px) !important;
     text-align: center !important;
+    background: none !important;
   }
 
-  .cinematic-story-step.active,
   .cinematic-story-step.pos-left.active,
   .cinematic-story-step.pos-right.active,
   .cinematic-story-step.pos-center.active {
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) !important;
   }
 
   .pos-left .story-step-meta,
   .pos-right .story-step-meta,
   .pos-center .story-step-meta {
     justify-content: center !important;
+  }
+
+  .hero-stage-content {
+    bottom: 4vh !important;
+    max-width: 90% !important;
   }
 
   .hero-stats-strip {
@@ -2114,34 +2155,124 @@ body.in-cinematic-mode .floating-whatsapp {
 }
 
 @media (max-width: 768px) {
+  /* Header & Navbar: Rock-solid on small displays (e.g. 360x800) */
   .mini-top-bar {
-    max-height: 38px;
+    max-height: 34px;
   }
   .mini-top-inner {
-    padding: 6px 0;
+    padding: 4px 0;
   }
-  .mini-live-pill span:not(.pulse-dot) {
-    font-size: 0.68rem;
-  }
-  .brand-logo-wrap {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    min-height: 36px;
-  }
-  .brand-name {
-    font-size: 0.95rem;
-  }
-  .brand-tagline {
-    font-size: 0.58rem;
-  }
-  .btn-nav-cta {
-    padding: 7px 13px;
-    font-size: 0.72rem;
+  .mini-live-pill {
+    display: none; /* Hide availability badge on small screens so phone & socials never wrap */
   }
 
-  /* Storytelling: Safe, lower bottom safe zone on mobile */
-  .cinematic-story-step,
+  .main-navbar-inner {
+    gap: 8px;
+  }
+  .brand-logo-wrap {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+  }
+  .brand-name {
+    font-size: 0.92rem;
+    letter-spacing: 0.08em;
+  }
+  .brand-tagline {
+    font-size: 0.54rem;
+    letter-spacing: 0.14em;
+  }
+
+  .nav-actions {
+    gap: 6px;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  .btn-text-full {
+    display: none;
+  }
+  .btn-text-short {
+    display: inline;
+  }
+  .btn-nav-cta {
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .hamburger {
+    display: flex;
+    width: 24px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+
+  /* Hero stage overlay on mobile: Compact & anchored to lower bottom
+     CRITICAL: Prevents text collision with navbar and leaves face/sunglasses 100% visible */
+  .hero-stage-content {
+    top: auto !important;
+    bottom: 3vh !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 92% !important;
+    max-width: 380px !important;
+  }
+
+  .hero-badge {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    margin-bottom: 8px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.35rem, 5.2vw, 1.75rem) !important;
+    margin-bottom: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-desc-full {
+    display: none;
+  }
+  .hero-desc-mobile {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 auto 10px auto;
+    max-width: 320px;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .hero-cta-group .btn {
+    padding: 7px 14px;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  /* Hide the 4-box stats card inside mobile hero stage overlay so it never crowds face */
+  .hero-stage-content .hero-stats-strip {
+    display: none !important;
+  }
+
+  .scroll-hint-bar {
+    margin-top: 6px;
+    font-size: 0.65rem;
+    gap: 6px;
+  }
+  .scroll-indicator-mouse {
+    width: 16px;
+    height: 24px;
+  }
+
+  /* Storytelling Steps on Mobile: Strictly anchored to lower bottom */
   .cinematic-story-step.pos-left,
   .cinematic-story-step.pos-right,
   .cinematic-story-step.pos-center {
@@ -2149,36 +2280,34 @@ body.in-cinematic-mode .floating-whatsapp {
     bottom: 2.2vh !important;
     left: 50% !important;
     right: auto !important;
-    transform: translateX(-50%) translateY(12px) !important;
+    transform: translateX(-50%) translateY(10px) !important;
     width: 92% !important;
     max-width: 92vw !important;
     text-align: center !important;
+    background: none !important;
   }
 
-  .cinematic-story-step.active,
   .cinematic-story-step.pos-left.active,
   .cinematic-story-step.pos-right.active,
   .cinematic-story-step.pos-center.active {
     transform: translateX(-50%) translateY(0) !important;
   }
+
   .story-step-title {
-    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+    font-size: clamp(1.1rem, 4.2vw, 1.35rem) !important;
     margin-bottom: 6px !important;
   }
   .story-step-desc {
-    font-size: clamp(0.78rem, 2.5vw, 0.88rem) !important;
-    line-height: 1.45 !important;
-    margin-bottom: 10px !important;
+    font-size: clamp(0.76rem, 2.6vw, 0.86rem) !important;
+    line-height: 1.42 !important;
+    margin-bottom: 8px !important;
+    max-width: 340px !important;
   }
   .story-meta-pill {
     font-size: 0.65rem !important;
     padding: 3px 8px !important;
   }
 
-  .hero-stats-strip {
-    grid-template-columns: 1fr 1fr;
-    padding: 16px;
-  }
   .form-row {
     grid-template-columns: 1fr;
   }
@@ -2200,14 +2329,461 @@ body.in-cinematic-mode .floating-whatsapp {
 }
 
 @media (max-width: 480px) {
-  .mini-live-pill {
-    display: none; /* Keep mini bar single-line on ultra small phones */
-  }
   .brand-name {
     font-size: 0.88rem;
   }
   .btn-nav-cta {
-    padding: 6px 10px;
+    padding: 5px 10px;
     font-size: 0.7rem;
+  }
+}
+
+
+/* ==========================================================================
+   GET PRICE DETAILS POPUP MODAL (Capture the Moment)
+   - Styled precisely to match luxury photo studio aesthetic
+   - Crimson ruby primary CTA matching wedding celebrations
+   - Multi-stage seamless transitions (Offer -> Form -> Success)
+   ========================================================================== */
+.price-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.price-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.price-popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 5, 8, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.price-popup-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: #ffffff;
+  color: #1a1a1a;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(212, 175, 55, 0.15);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+.price-popup-overlay.active .price-popup-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Close Circular Button (Matching example image with white circle & dark X) */
+.price-popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #2b2b2b;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.price-popup-close:hover {
+  background: #f4f5f8;
+  color: #be263e;
+  transform: scale(1.08);
+}
+
+/* Stage Visibility Control */
+.popup-stage {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.popup-stage-hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   STAGE 1: Offer Card (Banner + Capture the Moment + Crimson Buttons)
+   -------------------------------------------------------------------------- */
+.popup-image-banner {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #090a0f;
+}
+
+.popup-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  transition: transform 0.8s ease;
+}
+
+.price-popup-card:hover .popup-banner-img {
+  transform: scale(1.04);
+}
+
+.popup-banner-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 40%, rgba(255,255,255,0.4) 90%, #ffffff 100%);
+  pointer-events: none;
+}
+
+.popup-body {
+  padding: 24px 28px 28px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.popup-title {
+  font-family: var(--font-sans);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #1a1c23;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.popup-subtitle {
+  font-size: 0.92rem;
+  color: #555866;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.popup-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Crimson Wedding Theme Button matching user example screenshot */
+.btn-popup-primary {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #be263e 0%, #9b192e 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(190, 38, 62, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.btn-popup-primary:hover {
+  background: linear-gradient(135deg, #d32d48 0%, #ab1e35 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(190, 38, 62, 0.45);
+}
+
+.btn-popup-secondary {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #c72944 0%, #a41c30 100%);
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(190, 38, 62, 0.28);
+  transition: all 0.25s ease;
+}
+
+.btn-popup-secondary:hover {
+  background: linear-gradient(135deg, #d9324e 0%, #b21e35 100%);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(190, 38, 62, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   STAGE 2: Pricing Form
+   -------------------------------------------------------------------------- */
+.popup-form-header {
+  padding: 24px 28px 12px;
+  position: relative;
+  text-align: left;
+}
+
+.popup-back-btn {
+  background: none;
+  border: none;
+  color: #6c7080;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.popup-back-btn:hover {
+  color: #be263e;
+}
+
+.popup-form-title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #18191f;
+  margin-bottom: 4px;
+}
+
+.popup-form-subtitle {
+  font-size: 0.84rem;
+  color: #666a7b;
+  line-height: 1.45;
+}
+
+.popup-form {
+  padding: 0 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.popup-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.popup-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #333644;
+  letter-spacing: 0.02em;
+}
+
+.required-star {
+  color: #be263e;
+}
+
+.popup-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.popup-input-icon {
+  position: absolute;
+  left: 14px;
+  color: #8c90a2;
+  pointer-events: none;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  border-radius: 10px;
+  border: 1.5px solid #dcdfe6;
+  background: #fbfbfd;
+  font-size: 0.88rem;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.popup-input:focus {
+  border-color: #be263e;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(190, 38, 62, 0.12);
+}
+
+.field-error-msg {
+  font-size: 0.72rem;
+  color: #d32d48;
+  min-height: 14px;
+  font-weight: 500;
+}
+
+.btn-submit-price {
+  margin-top: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   STAGE 3: Success State
+   -------------------------------------------------------------------------- */
+.popup-success-content {
+  padding: 38px 28px 32px;
+  text-align: center;
+}
+
+.popup-success-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.12);
+  border: 2px solid #22c55e;
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  animation: successScale 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes successScale {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.popup-success-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: #121318;
+  margin-bottom: 10px;
+}
+
+.popup-success-desc {
+  font-size: 0.9rem;
+  color: #4f5363;
+  line-height: 1.55;
+  margin-bottom: 22px;
+}
+
+.popup-success-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.success-contact-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: #f4f5f8;
+  color: #282a36;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.success-contact-pill svg {
+  color: #be263e;
+}
+
+.popup-success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-popup-whatsapp {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: var(--radius-full);
+  background: #25d366;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-popup-whatsapp:hover {
+  background: #20bd5a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+}
+
+.btn-popup-done {
+  width: 100%;
+  padding: 11px 18px;
+  border-radius: var(--radius-full);
+  background: #f0f2f5;
+  color: #3e4250;
+  font-size: 0.84rem;
+  font-weight: 600;
+  border: 1px solid #d9dce3;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-popup-done:hover {
+  background: #e4e6eb;
+}
+
+@media (max-width: 480px) {
+  .price-popup-card {
+    max-width: 94vw;
+    border-radius: 16px;
+  }
+  .popup-image-banner {
+    height: 180px;
+  }
+  .popup-body {
+    padding: 20px 20px 24px;
+  }
+  .popup-title {
+    font-size: 1.35rem;
+  }
+  .popup-subtitle {
+    font-size: 0.85rem;
+  }
+  .popup-form-header {
+    padding: 20px 20px 10px;
+  }
+  .popup-form {
+    padding: 0 20px 24px;
   }
 }

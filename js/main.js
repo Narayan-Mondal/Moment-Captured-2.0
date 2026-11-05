@@ -6,6 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initScrollSequence();
   initNavbarAndDrawer();
+  initPricePopup();
   initPortfolioFilter();
   initLightbox();
   initBookingForm();
@@ -47,9 +48,9 @@ function initScrollSequence() {
 
   // Resize canvas to full viewport with device pixel ratio
   function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(window.innerWidth * dpr);
+    canvas.height = Math.round(window.innerHeight * dpr);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     drawFrame(Math.round(currentFrame));
@@ -490,4 +491,233 @@ function showToast(message) {
 }
 function initToast() {
   // ready
+}
+
+
+/* ==========================================================================
+   GET PRICE DETAILS POPUP ENGINE
+   - Auto-opens after a few seconds (5s)
+   - Auto-opens when cursor stops hovering / idle (7s of inactivity)
+   - Opens on exit-intent
+   - Opens on "Get Price" button clicks
+   - 3-Stage Workflow: Offer -> Form -> Success Confirmation
+   ========================================================================== */
+function initPricePopup() {
+  const modal = document.getElementById('price-popup-modal');
+  const backdrop = document.getElementById('price-popup-backdrop');
+  const closeBtn = document.getElementById('price-popup-close-btn');
+  const openButtons = document.querySelectorAll('.open-price-popup-btn, #nav-get-price-btn, #drawer-get-price-btn');
+
+  // Stages
+  const stageOffer = document.getElementById('popup-stage-offer');
+  const stageForm = document.getElementById('popup-stage-form');
+  const stageSuccess = document.getElementById('popup-stage-success');
+
+  // Stage Switchers
+  const gotoFormBtn = document.getElementById('popup-goto-form-btn');
+  const knowledgeBtn = document.getElementById('popup-goto-portfolio-btn');
+  const backBtn = document.getElementById('popup-back-btn');
+  const doneBtn = document.getElementById('popup-success-done-btn');
+  const form = document.getElementById('price-inquiry-form');
+  const successUserName = document.getElementById('success-user-name');
+  const whatsappDirectLink = document.getElementById('popup-whatsapp-direct-link');
+
+  if (!modal) return;
+
+  // Set min date to today for date picker
+  const dateInput = document.getElementById('price-date');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.min = today;
+  }
+
+  let isPopupOpen = false;
+  let hasAutoPopped = false;
+  let idleTimer = null;
+  const AUTO_POP_DELAY = 4500; // ~4.5 seconds after page open
+  const IDLE_DELAY = 6000;     // 6 seconds when cursor stops hovering / idle
+
+  function showStage(stageToShow) {
+    [stageOffer, stageForm, stageSuccess].forEach(stage => {
+      if (stage) stage.classList.add('popup-stage-hidden');
+    });
+    if (stageToShow) stageToShow.classList.remove('popup-stage-hidden');
+  }
+
+  function openPopup(targetStage = stageOffer) {
+    if (isPopupOpen) return;
+    isPopupOpen = true;
+    showStage(targetStage);
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePopup() {
+    if (!isPopupOpen) return;
+    isPopupOpen = false;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // Trigger 1: Open after few seconds when user opens the page
+  setTimeout(() => {
+    if (!hasAutoPopped && !isPopupOpen && !sessionStorage.getItem('pricePopupSubmitted')) {
+      hasAutoPopped = true;
+      openPopup(stageOffer);
+    }
+  }, AUTO_POP_DELAY);
+
+  // Trigger 2: Open after time when cursor stops hovering (idle timer)
+  function resetIdleHoverTimer() {
+    if (isPopupOpen || hasAutoPopped) return;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (!isPopupOpen && !hasAutoPopped && !sessionStorage.getItem('pricePopupSubmitted')) {
+        hasAutoPopped = true;
+        openPopup(stageOffer);
+      }
+    }, IDLE_DELAY);
+  }
+
+  window.addEventListener('mousemove', resetIdleHoverTimer, { passive: true });
+  window.addEventListener('scroll', resetIdleHoverTimer, { passive: true });
+  window.addEventListener('keydown', resetIdleHoverTimer, { passive: true });
+
+  // Trigger 3: Exit-intent when cursor moves to the top edge
+  document.addEventListener('mouseleave', (e) => {
+    if (e.clientY <= 10 && !isPopupOpen && !hasAutoPopped && !sessionStorage.getItem('pricePopupSubmitted')) {
+      hasAutoPopped = true;
+      openPopup(stageOffer);
+    }
+  });
+
+  // Manual Trigger: Buttons with "Get Price"
+  openButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetStage = btn.getAttribute('data-target-stage') === 'form' ? stageForm : stageOffer;
+      openPopup(targetStage);
+    });
+  });
+
+  // Close triggers
+  if (closeBtn) closeBtn.addEventListener('click', closePopup);
+  if (backdrop) backdrop.addEventListener('click', closePopup);
+  if (doneBtn) doneBtn.addEventListener('click', closePopup);
+  if (knowledgeBtn) {
+    knowledgeBtn.addEventListener('click', () => {
+      closePopup();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isPopupOpen) {
+      closePopup();
+    }
+  });
+
+  // Switch to Form stage
+  if (gotoFormBtn) {
+    gotoFormBtn.addEventListener('click', () => {
+      showStage(stageForm);
+      const nameInput = document.getElementById('price-name');
+      if (nameInput) setTimeout(() => nameInput.focus(), 150);
+    });
+  }
+
+  // Back to Offer stage
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      showStage(stageOffer);
+    });
+  }
+
+  // Form submission handler
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nameInput = document.getElementById('price-name');
+      const dateInput = document.getElementById('price-date');
+      const whatsappInput = document.getElementById('price-whatsapp');
+      const emailInput = document.getElementById('price-gmail');
+
+      const nameVal = nameInput ? nameInput.value.trim() : '';
+      const dateVal = dateInput ? dateInput.value.trim() : '';
+      const whatsappVal = whatsappInput ? whatsappInput.value.trim() : '';
+      const emailVal = emailInput ? emailInput.value.trim() : '';
+
+      // Validation
+      let isValid = true;
+
+      const nameErr = document.getElementById('price-name-error');
+      const dateErr = document.getElementById('price-date-error');
+      const whatsappErr = document.getElementById('price-whatsapp-error');
+      const emailErr = document.getElementById('price-gmail-error');
+
+      if (nameErr) nameErr.textContent = '';
+      if (dateErr) dateErr.textContent = '';
+      if (whatsappErr) whatsappErr.textContent = '';
+      if (emailErr) emailErr.textContent = '';
+
+      if (!nameVal || nameVal.length < 2) {
+        if (nameErr) nameErr.textContent = 'Please enter your name.';
+        isValid = false;
+      }
+
+      if (!dateVal) {
+        if (dateErr) dateErr.textContent = 'Please select your event date.';
+        isValid = false;
+      }
+
+      const cleanPhone = whatsappVal.replace(/\D/g, '');
+      if (!cleanPhone || cleanPhone.length < 10) {
+        if (whatsappErr) whatsappErr.textContent = 'Please enter a valid 10-digit WhatsApp number.';
+        isValid = false;
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailVal || !emailPattern.test(emailVal)) {
+        if (emailErr) emailErr.textContent = 'Please enter a valid email address.';
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Submission Success
+      const submitBtn = document.getElementById('popup-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Submitting Details...</span>';
+      }
+
+      setTimeout(() => {
+        if (successUserName) {
+          successUserName.textContent = nameVal;
+        }
+
+        // Prepare pre-filled WhatsApp link for direct fast chat
+        if (whatsappDirectLink) {
+          const waMessage = encodeURIComponent(
+            `Hello Moment Captured Team! My name is ${nameVal}. I am planning an event on ${dateVal}. Please share your pricing packages & availability. (WhatsApp: ${whatsappVal}, Email: ${emailVal})`
+          );
+          whatsappDirectLink.href = `https://wa.me/919475665668?text=${waMessage}`;
+        }
+
+        // Show Success Popup stage
+        showStage(stageSuccess);
+
+        // Reset submit button state
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>SUBMIT DETAILS</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+        }
+
+        form.reset();
+        sessionStorage.setItem('pricePopupSubmitted', 'true');
+      }, 700);
+    });
+  }
 }
