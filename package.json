@@ -1,0 +1,20 @@
+{
+  "name": "moment-captured-portfolio",
+  "version": "2.0.0",
+  "description": "Fine Art & Cinematic Photography Studio Portfolio for Moment Captured",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve -l 3000 .",
+    "dev": "npx serve -l 3000 ."
+  },
+  "keywords": [
+    "photography",
+    "portfolio",
+    "moment-captured",
+    "cinematic",
+    "canvas-scroll",
+    "fine-art"
+  ],
+  "author": "Moment Captured",
+  "license": "ISC"
+}
