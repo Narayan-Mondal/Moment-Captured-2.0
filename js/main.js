@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
    - Decoupled rAF scroll handler for buttery 60/120fps touch scrolling
    ========================================================================== */
 const TOTAL_FRAMES = 87;
-const FRAME_BASE_PATH = 'src/scroll-images/img ('; // e.g. "src/scroll-images/img (1).jpg"
-const FRAME_EXTENSION = ').jpg';
+const FRAME_BASE_PATH = 'src/scroll-images/img ('; // e.g. "src/scroll-images/img (1).webp"
+const FRAME_EXTENSION = ').webp';
 
 function initScrollSequence() {
   const section = document.getElementById('hero') || document.querySelector('.cinematic-scroll-section');
