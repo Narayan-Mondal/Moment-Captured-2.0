@@ -83,17 +83,16 @@
           </div>
           <div class="brand-info">
             <span class="brand-name">MOMENT CAPTURED</span>
-            <span class="brand-tagline">Fine Art &amp; Cinematic Visuals</span>
+            <span class="brand-tagline">Capturing Feelings, Preserving Forever</span>
           </div>
         </a>
 
         <!-- Desktop Navigation Links -->
         <ul class="nav-menu">
           <li><a href="#hero" class="nav-link active">Home</a></li>
-          <li><a href="#about" class="nav-link">Philosophy</a></li>
-          <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#stories" class="nav-link">Stories</a></li>
           <li><a href="#services" class="nav-link">Services</a></li>
-          <li><a href="#testimonials" class="nav-link">Stories</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
 
@@ -126,11 +125,10 @@
   <div class="mobile-drawer-overlay" id="drawer-overlay"></div>
   <aside class="mobile-drawer" id="mobile-drawer" aria-label="Mobile Navigation">
     <nav class="mobile-nav-links">
-      <a href="#hero" class="mobile-nav-link active">Story</a>
-      <a href="#about" class="mobile-nav-link">Philosophy</a>
-      <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+      <a href="#hero" class="mobile-nav-link active">Home</a>
+      <a href="#about" class="mobile-nav-link">About</a>
+      <a href="#stories" class="mobile-nav-link">Stories</a>
       <a href="#services" class="mobile-nav-link">Services</a>
-      <a href="#testimonials" class="mobile-nav-link">Stories</a>
       <a href="#contact" class="mobile-nav-link">Contact</a>
     </nav>
 
@@ -187,50 +185,25 @@
         
         <!-- STARTING CONTENT: HERO STAGE OVERLAY -->
         <div class="hero-stage-content" id="hero-stage-content">
-          <div class="hero-badge">
-            <span>Award-Winning Visual Studio</span>
-            <span>•</span>
-            <span>Bespoke Storytelling</span>
-          </div>
 
           <h1 class="hero-title">
-            Framing Life’s Fleeting
-            <span class="hero-title-accent">Masterpieces</span>
+            <span class="hero-title-main">Framing Life’s Fleeting</span>
+            <span class="hero-title-accent">Moment Captured</span>
           </h1>
 
           <p class="hero-desc">
-            <span class="hero-desc-full">Where profound emotion converges with timeless visual poetry. At <strong>Moment Captured</strong>, we don’t merely take pictures—we chronicle the unscripted laughter, sacred vows, and soulful glances that define your legacy.</span>
+            <span class="hero-desc-full">At <strong>Moment Captured</strong>, We turn precious moments into timeless memories, Capturing every smile, emotion, and story along the way.</span>
             <span class="hero-desc-mobile">Where profound emotion converges with timeless visual poetry.</span>
           </p>
 
           <div class="hero-cta-group">
             <a href="#about" class="btn btn-gold">
-              <span>Explore Our World</span>
+              <span>Explore</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
             </a>
             <button type="button" class="btn btn-outline open-price-popup-btn" data-target-stage="form">
-              <span>Get Price Details</span>
+              <span>Price Details</span>
             </button>
-          </div>
-
-          <!-- Trust & Legacy Stats Strip -->
-          <div class="hero-stats-strip">
-            <div class="stat-item">
-              <div class="stat-num">450+</div>
-              <div class="stat-label">Weddings & Stories</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">8+</div>
-              <div class="stat-label">Years of Craftsmanship</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">100%</div>
-              <div class="stat-label">Archival Color Fidelity</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-num">Pan-India</div>
-              <div class="stat-label">& Destinations</div>
-            </div>
           </div>
 
           <div class="scroll-hint-bar">
@@ -402,85 +375,194 @@
   </section>
 
   <!-- ==========================================================================
-       CURATED PORTFOLIO SHOWCASE
+       VISUAL STORIES GALLERY (LANDSCAPE & PORTRAIT ARCHIVE)
        ========================================================================== -->
-  <section class="portfolio-section" id="portfolio">
+  <section class="stories-section" id="stories">
     <div class="container">
-      <div class="portfolio-header center-text">
-        <div class="section-tag">Curated Archive</div>
-        <h2 class="section-title">Moments That Transcended Time</h2>
-        <p class="section-subtitle">
-          An intimate glimpse into our journey chronicling love, human vulnerability, and celebratory grandeur.
-        </p>
+      <div class="stories-header center-text">
+        <h2 class="section-title">Stories</h2>
+      </div>
 
-        <div class="portfolio-filters">
-          <button class="filter-btn active" data-filter="all">All Chronicles</button>
-          <button class="filter-btn" data-filter="weddings">Weddings</button>
-          <button class="filter-btn" data-filter="portraits">Fine Art Portraits</button>
-          <button class="filter-btn" data-filter="couples">Couples & Pre-Weddings</button>
-          <button class="filter-btn" data-filter="cinematic">Cinematic Frames</button>
+      <!-- Masonry Stories Grid -->
+      <div class="stories-grid" id="stories-grid">
+        <!-- Item 1: Landscape -->
+        <div class="story-card format-landscape" data-orientation="landscape">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(8).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(8).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (1).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 2: Portrait -->
+        <div class="story-card format-portrait" data-orientation="portrait">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(22).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(22).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (2).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 3: Landscape -->
+        <div class="story-card format-landscape" data-orientation="landscape">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(35).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(35).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (3).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 4: Portrait -->
+        <div class="story-card format-portrait" data-orientation="portrait">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(45).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(45).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (4).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 5: Landscape -->
+        <div class="story-card format-landscape" data-orientation="landscape">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(65).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(65).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (5).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 6: Portrait -->
+        <div class="story-card format-portrait" data-orientation="portrait">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(78).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(78).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (6).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- HIDDEN ITEMS (Revealed on "Load More Stories") -->
+        <!-- Item 7: Landscape -->
+        <div class="story-card format-landscape story-item-hidden" data-orientation="landscape">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(12).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(12).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (1).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 8: Portrait -->
+        <div class="story-card format-portrait story-item-hidden" data-orientation="portrait">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(28).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(28).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (2).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 9: Landscape -->
+        <div class="story-card format-landscape story-item-hidden" data-orientation="landscape">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(50).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(50).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (3).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 10: Portrait -->
+        <div class="story-card format-portrait story-item-hidden" data-orientation="portrait">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(60).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(60).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (4).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 11: Landscape -->
+        <div class="story-card format-landscape story-item-hidden" data-orientation="landscape">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(70).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(70).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (5).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 12: Portrait -->
+        <div class="story-card format-portrait story-item-hidden" data-orientation="portrait">
+          <div class="story-img-wrap">
+            <picture>
+              <source srcset="src/scroll-images/img%20(84).webp" type="image/webp">
+              <img src="src/scroll-images/img%20(84).jpg" alt="Moment Captured Story" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (6).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="portfolio-grid" id="portfolio-grid">
-        <!-- Item 1: Weddings -->
-        <div class="portfolio-item" data-category="weddings">
-          <img src="src/scroll-images/img%20(8).jpg" alt="Sacred Vows" class="portfolio-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (1).jpg'">
-          <div class="portfolio-overlay">
-            <span class="portfolio-item-category">Weddings</span>
-            <h4 class="portfolio-item-title">The Sacred Promise</h4>
-            <p class="portfolio-item-desc">Tender quietude amidst regal celebration.</p>
-          </div>
+      <!-- Bottom Actions: Load More & Contact Option -->
+      <div class="stories-bottom-actions">
+        <div class="stories-actions-row">
+          <button type="button" class="btn btn-outline btn-load-more" id="load-more-stories-btn">
+            <span class="btn-text">Load More Stories</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
         </div>
 
-        <!-- Item 2: Portraits -->
-        <div class="portfolio-item" data-category="portraits">
-          <img src="src/scroll-images/img%20(22).jpg" alt="Soulful Portrait" class="portfolio-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (2).jpg'">
-          <div class="portfolio-overlay">
-            <span class="portfolio-item-category">Fine Art Portraits</span>
-            <h4 class="portfolio-item-title">Grace in Solitude</h4>
-            <p class="portfolio-item-desc">Sculpted natural light capturing inward poise.</p>
-          </div>
-        </div>
-
-        <!-- Item 3: Couples -->
-        <div class="portfolio-item" data-category="couples">
-          <img src="src/scroll-images/img%20(35).jpg" alt="Twilight Embrace" class="portfolio-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (3).jpg'">
-          <div class="portfolio-overlay">
-            <span class="portfolio-item-category">Couples & Pre-Weddings</span>
-            <h4 class="portfolio-item-title">Echoes of Twilight</h4>
-            <p class="portfolio-item-desc">An effortless, unchoreographed romance.</p>
-          </div>
-        </div>
-
-        <!-- Item 4: Cinematic -->
-        <div class="portfolio-item" data-category="cinematic">
-          <img src="src/scroll-images/img%20(50).jpg" alt="Atmospheric Narrative" class="portfolio-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (4).jpg'">
-          <div class="portfolio-overlay">
-            <span class="portfolio-item-category">Cinematic Frames</span>
-            <h4 class="portfolio-item-title">Poetry of Shadows</h4>
-            <p class="portfolio-item-desc">Rich textures, analog tonality, and raw emotion.</p>
-          </div>
-        </div>
-
-        <!-- Item 5: Weddings -->
-        <div class="portfolio-item" data-category="weddings">
-          <img src="src/scroll-images/img%20(65).jpg" alt="Euphoric Revelry" class="portfolio-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (5).jpg'">
-          <div class="portfolio-overlay">
-            <span class="portfolio-item-category">Weddings</span>
-            <h4 class="portfolio-item-title">Euphoric Revelry</h4>
-            <p class="portfolio-item-desc">Unstoppable joy reverberating across the night.</p>
-          </div>
-        </div>
-
-        <!-- Item 6: Portraits -->
-        <div class="portfolio-item" data-category="portraits">
-          <img src="src/scroll-images/img%20(78).jpg" alt="Timeless Allure" class="portfolio-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (6).jpg'">
-          <div class="portfolio-overlay">
-            <span class="portfolio-item-category">Fine Art Portraits</span>
-            <h4 class="portfolio-item-title">Timeless Allure</h4>
-            <p class="portfolio-item-desc">A gaze that lingers through generations.</p>
-          </div>
+        <div class="stories-contact-wrap">
+          <span class="stories-contact-hint">Let’s preserve yours</span>
+          <a href="#contact" class="btn btn-gold btn-story-contact">
+            <span>Contact Studio</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
         </div>
       </div>
     </div>
@@ -610,64 +692,6 @@
     </div>
   </section>
 
-  <!-- ==========================================================================
-       CLIENT ENDORSEMENTS & STORIES
-       ========================================================================== -->
-  <section class="testimonials-section" id="testimonials">
-    <div class="container">
-      <div class="center-text">
-        <div class="section-tag">Heartfelt Words</div>
-        <h2 class="section-title">Stories Entrusted to Our Care</h2>
-        <p class="section-subtitle">
-          Real reflections from clients whose most defining moments now live as timeless heirlooms.
-        </p>
-      </div>
-
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <div class="stars-row">★★★★★</div>
-          <blockquote class="testimonial-quote">
-            “Looking through our gallery felt like stepping back into the exact emotion of our vows. Moment Captured didn’t just document our wedding; they captured the invisible magic we felt in our hearts.”
-          </blockquote>
-          <div class="client-meta">
-            <div class="client-avatar">A&R</div>
-            <div>
-              <div class="client-name">Ananya & Rishabh</div>
-              <div class="client-label client-celebration">Palace Wedding, Udaipur</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="stars-row">★★★★★</div>
-          <blockquote class="testimonial-quote">
-            “From our first phone call with the team to the day our handcrafted album arrived, everything was handled with impeccable professionalism and artistic warmth. They felt like family on our day.”
-          </blockquote>
-          <div class="client-meta">
-            <div class="client-avatar">P&S</div>
-            <div>
-              <div class="client-name">Priyanka & Saurabh</div>
-              <div class="client-label client-celebration">Heritage Celebration, Kolkata</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="stars-row">★★★★★</div>
-          <blockquote class="testimonial-quote">
-            “I have worked with many commercial photographers, but the eye for lighting, soul, and candid authenticity at Moment Captured is on an entirely different level. Pure visual poetry.”
-          </blockquote>
-          <div class="client-meta">
-            <div class="client-avatar">VM</div>
-            <div>
-              <div class="client-name">Vikram Malhotra</div>
-              <div class="client-label client-celebration">Editorial & Family Heirloom</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ==========================================================================
        CONTACT & BOOKING STUDIO
@@ -852,7 +876,7 @@
             <li><a href="#hero" class="footer-link">Home Overview</a></li>
             <li><a href="#cinematic-sequence" class="footer-link">Cinematic Experience</a></li>
             <li><a href="#about" class="footer-link">Artistic Philosophy</a></li>
-            <li><a href="#portfolio" class="footer-link">Curated Archive</a></li>
+            <li><a href="#stories" class="footer-link">Visual Stories</a></li>
             <li><a href="#services" class="footer-link">Investment & Packages</a></li>
           </ul>
         </div>
@@ -940,8 +964,8 @@
             <button type="button" class="btn btn-popup-primary" id="popup-goto-form-btn">
               <span>GET PRICE DETAILS</span>
             </button>
-            <a href="#portfolio" class="btn btn-popup-secondary" id="popup-goto-portfolio-btn">
-              <span>GET SOME KNOWLEDGE</span>
+            <a href="#stories" class="btn btn-popup-secondary" id="popup-goto-portfolio-btn">
+              <span>EXPLORE STORIES</span>
             </a>
           </div>
         </div>

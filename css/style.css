@@ -788,12 +788,17 @@ body.in-cinematic-mode .floating-whatsapp {
 
 .hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.4rem, 5.2vw, 4.6rem);
+  font-size: clamp(2rem, 3.8vw, 4.1rem);
   font-weight: 500;
-  line-height: 1.15;
+  line-height: 1.18;
   letter-spacing: 0.02em;
   margin-bottom: 24px;
   color: var(--text-primary);
+}
+
+.hero-title-main {
+  display: block;
+  white-space: nowrap;
 }
 
 .hero-title-accent {
@@ -821,56 +826,13 @@ body.in-cinematic-mode .floating-whatsapp {
   justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 50px;
-}
-
-.hero-stats-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  padding: 24px 30px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  backdrop-filter: blur(12px);
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.stat-item {
-  text-align: center;
-  position: relative;
-}
-.stat-item:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: -10px;
-  top: 15%;
-  height: 70%;
-  width: 1px;
-  background: var(--border-light);
-}
-
-.stat-num {
-  font-family: var(--font-serif);
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--accent-gold);
-  line-height: 1.2;
-}
-
-.stat-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 4px;
+  margin-bottom: 20px;
 }
 
 /* Scroll Invitation Hint */
 .scroll-hint-bar {
   text-align: center;
-  margin-top: 36px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1058,7 +1020,7 @@ body.in-cinematic-mode .floating-whatsapp {
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
-  max-width: 920px;
+  max-width: 1150px;
   text-align: center;
   z-index: 103;
   pointer-events: auto;
@@ -1376,116 +1338,204 @@ body.in-cinematic-mode .floating-whatsapp {
 }
 
 /* ==========================================================================
-   Portfolio Showcase Gallery
+   Stories Gallery Section (Landscape & Portrait Compositions)
    ========================================================================== */
-.portfolio-section {
+.stories-section {
   padding: 120px 0;
   background: var(--bg-dark);
+  position: relative;
 }
 
-.portfolio-header {
-  margin-bottom: 50px;
+.stories-header {
+  margin-bottom: 45px;
 }
 
-.portfolio-filters {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 30px;
+.stories-header .section-title {
+  margin-bottom: 0;
 }
 
-.filter-btn {
-  padding: 8px 20px;
-  border-radius: var(--radius-full);
-  font-size: 0.84rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  border: 1px solid var(--border-light);
-  background: rgba(255, 255, 255, 0.02);
-  transition: var(--transition-fast);
+/* Balanced Masonry Grid for Landscape & Portrait */
+.stories-grid {
+  column-count: 3;
+  column-gap: 24px;
 }
 
-.filter-btn:hover {
-  color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.filter-btn.active {
-  color: var(--bg-dark);
-  background: var(--accent-gold);
-  border-color: var(--accent-gold);
-  font-weight: 600;
-}
-
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
-.portfolio-item {
+.story-card {
+  break-inside: avoid;
+  margin-bottom: 24px;
   position: relative;
   border-radius: var(--radius-md);
   overflow: hidden;
   background: #111;
   border: 1px solid var(--border-light);
   cursor: pointer;
-  aspect-ratio: 4/5;
-  transition: var(--transition-smooth);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+  will-change: transform;
 }
 
-.portfolio-item:hover {
-  transform: translateY(-5px);
+.story-card:hover {
+  transform: translateY(-6px);
   border-color: var(--border-gold);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.65);
 }
 
-.portfolio-img {
+/* Aspect ratio handling for portrait vs landscape */
+.story-card.format-portrait .story-img-wrap {
+  aspect-ratio: 4 / 5;
+}
+
+.story-card.format-landscape .story-img-wrap {
+  aspect-ratio: 16 / 10;
+}
+
+.story-img-wrap {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #0d0f12;
+}
+
+.story-img-wrap picture,
+.story-img-wrap img {
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: cover;
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.portfolio-item:hover .portfolio-img {
-  transform: scale(1.06);
+.story-card:hover .story-img-wrap img {
+  transform: scale(1.05);
 }
 
-.portfolio-overlay {
+/* Expand Button (Clean, luxury glass icon on top-right of image) */
+.story-expand-btn {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(7, 8, 10, 0.95) 100%);
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(10, 12, 16, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease,
+              border-color 0.3s ease,
+              color 0.3s ease,
+              opacity 0.3s ease;
+  opacity: 0.85;
+}
+
+.story-card:hover .story-expand-btn {
+  opacity: 1;
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.88);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* Hidden items for "Load More" */
+.story-item-hidden {
+  display: none !important;
+}
+
+.story-item-revealing {
+  animation: storyFadeIn 0.5s ease forwards;
+}
+
+@keyframes storyFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stories Bottom Actions (Load More + Contact Option) */
+.stories-bottom-actions {
+  margin-top: 55px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 24px;
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  text-align: center;
 }
 
-.portfolio-item-category {
-  font-size: 0.74rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--accent-gold);
+.stories-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.btn-load-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 32px;
+  font-size: 0.88rem;
   font-weight: 600;
-  margin-bottom: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: var(--transition-fast);
 }
 
-.portfolio-item-title {
-  font-family: var(--font-serif);
-  font-size: 1.2rem;
-  color: #ffffff;
-  line-height: 1.25;
-  margin-bottom: 6px;
+.btn-load-more.all-loaded {
+  opacity: 0.6;
+  cursor: default;
+  pointer-events: none;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
 }
 
-.portfolio-item-desc {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+.btn-load-more svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-load-more:not(.all-loaded):hover svg {
+  transform: translateY(3px);
+}
+
+.stories-contact-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+}
+
+.stories-contact-hint {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.btn-story-contact {
+  padding: 8px 18px;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* ==========================================================================
@@ -1586,86 +1636,6 @@ body.in-cinematic-mode .floating-whatsapp {
   flex-shrink: 0;
 }
 
-/* ==========================================================================
-   Client Testimonials / Trust Endorsements
-   ========================================================================== */
-.testimonials-section {
-  padding: 120px 0;
-  background: var(--bg-dark);
-  position: relative;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-top: 50px;
-}
-
-.testimonial-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 36px 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: var(--transition-smooth);
-}
-
-.testimonial-card:hover {
-  border-color: var(--border-gold);
-  transform: translateY(-4px);
-}
-
-.stars-row {
-  color: var(--accent-gold);
-  display: flex;
-  gap: 4px;
-  margin-bottom: 18px;
-  font-size: 0.95rem;
-}
-
-.testimonial-quote {
-  font-family: var(--font-editorial);
-  font-size: 1.15rem;
-  font-style: italic;
-  color: var(--text-primary);
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-
-.client-meta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border-top: 1px solid var(--border-light);
-  padding-top: 18px;
-}
-
-.client-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-gold);
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.client-name {
-  font-family: var(--font-serif);
-  font-size: 0.98rem;
-  color: var(--text-primary);
-}
-
-.client-celebration {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
 
 /* ==========================================================================
    Contact / Studio Booking Section
@@ -2042,6 +2012,10 @@ body.in-cinematic-mode .floating-whatsapp {
   font-family: var(--font-serif);
 }
 
+.lightbox-caption:empty {
+  display: none;
+}
+
 .lightbox-close {
   position: absolute;
   top: 25px;
@@ -2130,13 +2104,6 @@ body.in-cinematic-mode .floating-whatsapp {
     bottom: 4vh !important;
     max-width: 90% !important;
   }
-
-  .hero-stats-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .stat-item:nth-child(2)::after {
-    display: none;
-  }
   .philosophy-grid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -2144,13 +2111,11 @@ body.in-cinematic-mode .floating-whatsapp {
   .trust-pillars-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .portfolio-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .stories-grid {
+    column-count: 2;
+    column-gap: 20px;
   }
   .services-grid {
-    grid-template-columns: 1fr;
-  }
-  .testimonials-grid {
     grid-template-columns: 1fr;
   }
   .contact-layout {
@@ -2254,6 +2219,10 @@ body.in-cinematic-mode .floating-whatsapp {
     line-height: 1.2 !important;
   }
 
+  .hero-title-main {
+    white-space: normal;
+  }
+
   .hero-desc-full {
     display: none;
   }
@@ -2277,11 +2246,6 @@ body.in-cinematic-mode .floating-whatsapp {
     padding: 7px 14px;
     font-size: 0.72rem;
     white-space: nowrap;
-  }
-
-  /* Hide the 4-box stats card inside mobile hero stage overlay so it never crowds face */
-  .hero-stage-content .hero-stats-strip {
-    display: none !important;
   }
 
   .scroll-hint-bar {
@@ -2336,8 +2300,28 @@ body.in-cinematic-mode .floating-whatsapp {
   .trust-pillars-grid {
     grid-template-columns: 1fr;
   }
-  .portfolio-grid {
-    grid-template-columns: 1fr;
+  .stories-grid {
+    column-count: 1;
+    column-gap: 16px;
+  }
+  .story-expand-btn {
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    opacity: 0.9;
+  }
+  .stories-contact-wrap {
+    flex-direction: column;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 380px;
+  }
+  .btn-load-more,
+  .btn-story-contact {
+    width: 100%;
+    justify-content: center;
   }
   .footer-top {
     grid-template-columns: 1fr;

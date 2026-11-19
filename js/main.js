@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollSequence();
   initNavbarAndDrawer();
   initPricePopup();
-  initPortfolioFilter();
+  initStoriesGallery();
   initLightbox();
   initBookingForm();
   initToast();
@@ -426,70 +426,80 @@ function initNavbarAndDrawer() {
 }
 
 /* ==========================================================================
-   3. PORTFOLIO FILTER SYSTEM
+   3. STORIES GALLERY & LOAD MORE ENGINE
    ========================================================================== */
-function initPortfolioFilter() {
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const portfolioItems = document.querySelectorAll('.portfolio-item');
+function initStoriesGallery() {
+  const loadMoreBtn = document.getElementById('load-more-stories-btn');
+  const storiesGrid = document.getElementById('stories-grid');
+  if (!loadMoreBtn || !storiesGrid) return;
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  loadMoreBtn.addEventListener('click', () => {
+    const hiddenItems = storiesGrid.querySelectorAll('.story-item-hidden');
+    if (!hiddenItems || hiddenItems.length === 0) return;
 
-      const filter = btn.getAttribute('data-filter');
+    // Reveal next batch (up to 6 items)
+    const batchSize = 6;
+    const toReveal = Array.from(hiddenItems).slice(0, batchSize);
 
-      portfolioItems.forEach(item => {
-        const category = item.getAttribute('data-category');
-        if (filter === 'all' || category === filter) {
-          item.style.display = 'block';
-          setTimeout(() => {
-            item.style.opacity = '1';
-            item.style.transform = 'translateY(0) scale(1)';
-          }, 30);
-        } else {
-          item.style.opacity = '0';
-          item.style.transform = 'translateY(20px) scale(0.95)';
-          setTimeout(() => {
-            item.style.display = 'none';
-          }, 300);
-        }
-      });
+    toReveal.forEach((item, index) => {
+      item.classList.remove('story-item-hidden');
+      item.classList.add('story-item-revealing');
+      item.style.animationDelay = `${index * 70}ms`;
     });
+
+    // Check if any hidden items remain
+    const remaining = storiesGrid.querySelectorAll('.story-item-hidden');
+    if (remaining.length === 0) {
+      loadMoreBtn.classList.add('all-loaded');
+      const btnText = loadMoreBtn.querySelector('.btn-text');
+      if (btnText) btnText.textContent = 'All Stories Loaded';
+      const icon = loadMoreBtn.querySelector('svg');
+      if (icon) icon.style.display = 'none';
+    }
   });
 }
 
 /* ==========================================================================
-   4. LIGHTBOX MODAL
+   4. FULLSCREEN LIGHTBOX MODAL
    ========================================================================== */
 function initLightbox() {
   const modal = document.getElementById('lightbox-modal');
   const modalImg = document.getElementById('lightbox-img');
   const modalCaption = document.getElementById('lightbox-caption');
   const closeBtn = document.getElementById('lightbox-close');
-  const items = document.querySelectorAll('.portfolio-item');
 
   if (!modal || !modalImg) return;
 
-  items.forEach(item => {
-    item.addEventListener('click', () => {
-      const img = item.querySelector('.portfolio-img');
-      const title = item.querySelector('.portfolio-item-title')?.textContent || '';
-      const category = item.querySelector('.portfolio-item-category')?.textContent || '';
+  // Event delegation handles initial cards and dynamically revealed cards
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.story-card, .portfolio-item');
+    if (!card) return;
 
-      if (img) {
-        modalImg.src = img.src;
-        if (modalCaption) {
+    const img = card.querySelector('img');
+    const title = card.querySelector('.story-item-title, .portfolio-item-title')?.textContent?.trim() || '';
+    const category = card.querySelector('.story-item-category, .portfolio-item-category')?.textContent?.trim() || '';
+    const format = card.querySelector('.story-format-badge')?.textContent?.trim() || '';
+
+    if (img) {
+      modalImg.src = img.currentSrc || img.src;
+      if (modalCaption) {
+        if (format && category) {
+          modalCaption.textContent = `${format} • ${category} — ${title}`;
+        } else if (category) {
           modalCaption.textContent = `${category} — ${title}`;
+        } else {
+          modalCaption.textContent = title;
         }
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
       }
-    });
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
   });
 
   function closeModal() {
     modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
 
