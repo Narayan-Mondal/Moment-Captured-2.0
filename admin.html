@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Media Manager | Moment Captured</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+
+  <link rel="icon" type="image/png" href="src/logo/Moment Captured logo .png">
+</head>
+<body class="admin-body">
+
+  <!-- ==========================================================================
+       LOGIN BARRIER / PASSWORD MODAL
+       ========================================================================== -->
+  <div class="admin-auth-overlay" id="admin-auth-modal">
+    <div class="admin-auth-card">
+      <div class="brand-logo-wrap" style="width: 56px; height: 56px; margin: 0 auto 16px;">
+        <img src="src/logo/Moment%20Captured%20logo%20.png" alt="Moment Captured Logo" class="brand-logo-img">
+      </div>
+      <h2 class="auth-title">Studio Portal Access</h2>
+      <p class="auth-subtitle">Enter your studio administrator key to manage gallery media.</p>
+
+      <form id="admin-login-form" class="auth-form" onsubmit="return false;">
+        <div class="auth-input-group">
+          <input 
+            type="password" 
+            id="admin-password-input" 
+            class="auth-input" 
+            placeholder="Enter Admin Password" 
+            required 
+            autocomplete="current-password"
+          >
+          <button type="button" id="toggle-pw-btn" class="toggle-pw-btn" title="Show/Hide Password" aria-label="Toggle password">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div id="auth-error-msg" class="auth-error-msg"></div>
+        <button type="submit" id="admin-login-btn" class="btn btn-gold auth-submit-btn">
+          <span>Authorize Access</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+      <div class="auth-hint">
+        <span>Protected studio portal. Credentials managed securely in <code>.env</code></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ADMIN HEADER & TOP NAVIGATION
+       ========================================================================== -->
+  <header class="admin-navbar">
+    <div class="admin-container admin-nav-inner">
+      <div class="admin-brand">
+        <a href="index.html" class="brand" title="Moment Captured Home">
+          <div class="brand-logo-wrap">
+            <img src="src/logo/Moment%20Captured%20logo%20.png" alt="Moment Captured Logo" class="brand-logo-img">
+          </div>
+          <div class="brand-info">
+            <span class="brand-name">MOMENT CAPTURED</span>
+            <span class="brand-tagline">Studio Media Control Center</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="admin-nav-actions">
+        <a href="index.html#stories" target="_blank" class="btn btn-outline btn-sm nav-live-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span>View Live Gallery</span>
+        </a>
+        <button type="button" id="admin-logout-btn" class="btn-logout" title="Sign Out">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN ADMIN CONTAINER
+       ========================================================================== -->
+  <main class="admin-main">
+    <div class="admin-container">
+
+      <!-- Breadcrumbs & Title Banner -->
+      <div class="admin-page-header">
+        <div>
+          <div class="section-tag">Media Management</div>
+          <h1 class="admin-heading">Stories Gallery Uploader</h1>
+          <p class="admin-subheading">
+            Upload high-resolution landscape and portrait frames directly to Cloudinary and synchronize with the live Stories section.
+          </p>
+        </div>
+        <div class="status-pill-container">
+          <div class="status-pill" id="cloudinary-status-pill">
+            <span class="status-dot"></span>
+            <span id="cloudinary-status-text">Checking Cloudinary...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cloudinary Environment Notice Banner -->
+      <div class="cloudinary-banner" id="cloudinary-config-banner">
+        <div class="cloudinary-banner-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="cloudinary-banner-text">
+          <h4 id="cloudinary-banner-title">Cloudinary Environment Ready</h4>
+          <p id="cloudinary-banner-desc">
+            Media will be processed and stored on Cloudinary CDN. Configuration is pulled from <code>.env</code> file.
+          </p>
+        </div>
+        <button type="button" class="btn btn-outline btn-xs" id="open-config-modal-btn">
+          Cloudinary Settings
+        </button>
+      </div>
+
+      <!-- GRID LAYOUT: Uploader (Left) + Live Gallery Preview (Right) -->
+      <div class="admin-grid-layout">
+        
+        <!-- LEFT COLUMN: Media Uploader -->
+        <section class="admin-card uploader-panel">
+          <div class="card-header">
+            <h3 class="card-title">Upload New Story</h3>
+            <span class="card-badge">Cloudinary Sync</span>
+          </div>
+
+          <!-- UPLOAD FORM -->
+          <form id="media-upload-form" class="uploader-form" onsubmit="return false;">
+            
+            <!-- Drag & Drop Zone -->
+            <div class="dropzone" id="upload-dropzone">
+              <input type="file" id="media-file-input" accept="image/*" class="dropzone-file-input">
+              <div class="dropzone-content" id="dropzone-prompt">
+                <div class="dropzone-icon">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                </div>
+                <h4 class="dropzone-title">Drag & drop photo here</h4>
+                <p class="dropzone-subtitle">or <span class="highlight-gold">browse from device</span></p>
+                <div class="dropzone-specs">Supports WEBP, JPG, PNG, AVIF (Max 25MB)</div>
+              </div>
+
+              <!-- Live File Preview inside Dropzone -->
+              <div class="dropzone-preview hidden" id="dropzone-preview-wrap">
+                <img id="preview-image-elem" src="" alt="Upload Preview">
+                <button type="button" class="btn-remove-preview" id="btn-cancel-preview" title="Remove image">&times;</button>
+              </div>
+            </div>
+
+            <!-- Alternative: Enter Direct Image URL -->
+            <div class="or-separator">
+              <span>OR ENTER DIRECT URL</span>
+            </div>
+
+            <div class="form-group">
+              <label for="direct-url-input" class="form-label">Cloudinary / Image URL</label>
+              <input 
+                type="url" 
+                id="direct-url-input" 
+                class="form-control" 
+                placeholder="https://res.cloudinary.com/.../image.jpg"
+              >
+            </div>
+
+            <!-- Pre-Upload Details & Orientation Auto-detection -->
+            <div class="upload-options-group">
+              <div class="form-group">
+                <label class="form-label">
+                  Frame Orientation
+                  <span class="label-hint" id="auto-orientation-hint">(Auto-detected)</span>
+                </label>
+                <div class="orientation-buttons">
+                  <button type="button" class="btn-orientation active" data-orientation="landscape" id="btn-orient-landscape">
+                    <svg width="18" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="18" height="12" rx="2"/></svg>
+                    <span>Landscape (16:10)</span>
+                  </button>
+                  <button type="button" class="btn-orientation" data-orientation="portrait" id="btn-orient-portrait">
+                    <svg width="14" height="18" viewBox="0 0 14 20" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="12" height="18" rx="2"/></svg>
+                    <span>Portrait (4:5)</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="image-alt-input" class="form-label">Image Description / Alt Text</label>
+                <input 
+                  type="text" 
+                  id="image-alt-input" 
+                  class="form-control" 
+                  placeholder="e.g. Royal Wedding Celebration in Udaipur"
+                  value="Moment Captured Story"
+                >
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="upload-progress-container hidden" id="upload-progress-bar-wrap">
+              <div class="upload-progress-header">
+                <span id="upload-progress-status">Uploading to Cloudinary...</span>
+                <span id="upload-progress-pct">0%</span>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="upload-progress-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Submit Upload Button -->
+            <button type="button" id="submit-upload-btn" class="btn btn-gold btn-upload-submit" disabled>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+              <span>Publish to Stories Gallery</span>
+            </button>
+          </form>
+        </section>
+
+        <!-- RIGHT COLUMN: Active Gallery Management -->
+        <section class="admin-card gallery-manage-panel">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Live Stories</h3>
+              <p class="card-subtitle">Media currently published in the Stories gallery section</p>
+            </div>
+            <div class="gallery-counter">
+              <span id="stories-count-badge" class="counter-badge">12 Frames</span>
+            </div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="gallery-controls-bar">
+            <div class="filter-tabs">
+              <button class="gallery-filter-tab active" data-filter="all">All</button>
+              <button class="gallery-filter-tab" data-filter="landscape">Landscape</button>
+              <button class="gallery-filter-tab" data-filter="portrait">Portrait</button>
+            </div>
+            <button type="button" id="btn-refresh-gallery" class="btn btn-outline btn-xs btn-refresh" title="Reload stories">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          <!-- Stories Grid List in Admin -->
+          <div class="admin-stories-grid" id="admin-stories-container">
+            <!-- Dynamically populated via js/admin.js -->
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <span>Loading gallery media...</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       CLOUDINARY CONFIGURATION MODAL
+       ========================================================================== -->
+  <div class="admin-modal-overlay" id="cloudinary-config-modal">
+    <div class="admin-modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Cloudinary Security & Integration</h3>
+        <button type="button" class="modal-close-btn" id="close-config-modal-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          Your Cloudinary credentials and admin password are kept isolated on the server in <code>.env</code> and are never transmitted to or published on client browsers.
+        </p>
+
+        <div class="security-checklist" style="background: rgba(255,255,255,0.03); border: 1px solid var(--admin-border); border-radius: var(--radius-sm); padding: 18px; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--admin-success)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size: 0.86rem; color: #fff;"><strong>API Secret Protection:</strong> Stored securely in <code>.env</code> only</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--admin-success)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size: 0.86rem; color: #fff;"><strong>Admin Password:</strong> Server-verified via secure session token</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--admin-success)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size: 0.86rem; color: #fff;"><strong>Git Safe:</strong> <code>.gitignore</code> active (prevents accidental credential commits)</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-gold" id="btn-cancel-config" style="width: 100%;">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="admin-toast-container" id="admin-toast-box"></div>
+
+  <!-- Scripts -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

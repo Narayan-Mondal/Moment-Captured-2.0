@@ -1,0 +1,98 @@
+[
+  {
+    "id": "story-default-1",
+    "imageUrl": "src/scroll-images/img (8).jpg",
+    "webpUrl": "src/scroll-images/img (8).webp",
+    "orientation": "landscape",
+    "alt": "The Sacred Promise - Moment Captured Story",
+    "createdAt": 1732579201000
+  },
+  {
+    "id": "story-default-2",
+    "imageUrl": "src/scroll-images/img (22).jpg",
+    "webpUrl": "src/scroll-images/img (22).webp",
+    "orientation": "portrait",
+    "alt": "Grace in Solitude - Moment Captured Story",
+    "createdAt": 1732579202000
+  },
+  {
+    "id": "story-default-3",
+    "imageUrl": "src/scroll-images/img (35).jpg",
+    "webpUrl": "src/scroll-images/img (35).webp",
+    "orientation": "landscape",
+    "alt": "Echoes of Twilight - Moment Captured Story",
+    "createdAt": 1732579203000
+  },
+  {
+    "id": "story-default-4",
+    "imageUrl": "src/scroll-images/img (45).jpg",
+    "webpUrl": "src/scroll-images/img (45).webp",
+    "orientation": "portrait",
+    "alt": "Soulful Intimacy - Moment Captured Story",
+    "createdAt": 1732579204000
+  },
+  {
+    "id": "story-default-5",
+    "imageUrl": "src/scroll-images/img (65).jpg",
+    "webpUrl": "src/scroll-images/img (65).webp",
+    "orientation": "landscape",
+    "alt": "Euphoric Revelry - Moment Captured Story",
+    "createdAt": 1732579205000
+  },
+  {
+    "id": "story-default-6",
+    "imageUrl": "src/scroll-images/img (78).jpg",
+    "webpUrl": "src/scroll-images/img (78).webp",
+    "orientation": "portrait",
+    "alt": "Timeless Allure - Moment Captured Story",
+    "createdAt": 1732579206000
+  },
+  {
+    "id": "story-default-7",
+    "imageUrl": "src/scroll-images/img (12).jpg",
+    "webpUrl": "src/scroll-images/img (12).webp",
+    "orientation": "landscape",
+    "alt": "Golden Reverie - Moment Captured Story",
+    "createdAt": 1732579207000
+  },
+  {
+    "id": "story-default-8",
+    "imageUrl": "src/scroll-images/img (28).jpg",
+    "webpUrl": "src/scroll-images/img (28).webp",
+    "orientation": "portrait",
+    "alt": "Unspoken Poetry - Moment Captured Story",
+    "createdAt": 1732579208000
+  },
+  {
+    "id": "story-default-9",
+    "imageUrl": "src/scroll-images/img (50).jpg",
+    "webpUrl": "src/scroll-images/img (50).webp",
+    "orientation": "landscape",
+    "alt": "Poetry of Shadows - Moment Captured Story",
+    "createdAt": 1732579209000
+  },
+  {
+    "id": "story-default-10",
+    "imageUrl": "src/scroll-images/img (60).jpg",
+    "webpUrl": "src/scroll-images/img (60).webp",
+    "orientation": "portrait",
+    "alt": "Vows in Crimson - Moment Captured Story",
+    "createdAt": 1732579210000
+  },
+  {
+    "id": "story-default-11",
+    "imageUrl": "src/scroll-images/img (70).jpg",
+    "webpUrl": "src/scroll-images/img (70).webp",
+    "orientation": "landscape",
+    "alt": "Starlit Chronicle - Moment Captured Story",
+    "createdAt": 1732579211000
+  },
+  {
+    "id": "story-default-12",
+    "imageUrl": "src/scroll-images/img (84).jpg",
+    "webpUrl": "src/scroll-images/img (84).webp",
+    "orientation": "portrait",
+    "alt": "The Grand Heritage - Moment Captured Story",
+    "createdAt": 1732579212000
+  }
+]

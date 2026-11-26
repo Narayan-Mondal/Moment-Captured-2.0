@@ -431,32 +431,109 @@ function initNavbarAndDrawer() {
 function initStoriesGallery() {
   const loadMoreBtn = document.getElementById('load-more-stories-btn');
   const storiesGrid = document.getElementById('stories-grid');
-  if (!loadMoreBtn || !storiesGrid) return;
+  if (!storiesGrid) return;
 
-  loadMoreBtn.addEventListener('click', () => {
-    const hiddenItems = storiesGrid.querySelectorAll('.story-item-hidden');
-    if (!hiddenItems || hiddenItems.length === 0) return;
+  // Dynamic Stories Sync (Cloudinary & Local API)
+  loadDynamicStories(storiesGrid, loadMoreBtn);
 
-    // Reveal next batch (up to 6 items)
-    const batchSize = 6;
-    const toReveal = Array.from(hiddenItems).slice(0, batchSize);
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => {
+      const hiddenItems = storiesGrid.querySelectorAll('.story-item-hidden');
+      if (!hiddenItems || hiddenItems.length === 0) return;
 
-    toReveal.forEach((item, index) => {
-      item.classList.remove('story-item-hidden');
-      item.classList.add('story-item-revealing');
-      item.style.animationDelay = `${index * 70}ms`;
+      // Reveal next batch (up to 6 items)
+      const batchSize = 6;
+      const toReveal = Array.from(hiddenItems).slice(0, batchSize);
+
+      toReveal.forEach((item, index) => {
+        item.classList.remove('story-item-hidden');
+        item.classList.add('story-item-revealing');
+        item.style.animationDelay = `${index * 70}ms`;
+      });
+
+      // Check if any hidden items remain
+      const remaining = storiesGrid.querySelectorAll('.story-item-hidden');
+      if (remaining.length === 0) {
+        loadMoreBtn.classList.add('all-loaded');
+        const btnText = loadMoreBtn.querySelector('.btn-text');
+        if (btnText) btnText.textContent = 'All Stories Loaded';
+        const icon = loadMoreBtn.querySelector('svg');
+        if (icon) icon.style.display = 'none';
+      }
     });
+  }
+}
 
-    // Check if any hidden items remain
-    const remaining = storiesGrid.querySelectorAll('.story-item-hidden');
-    if (remaining.length === 0) {
-      loadMoreBtn.classList.add('all-loaded');
-      const btnText = loadMoreBtn.querySelector('.btn-text');
-      if (btnText) btnText.textContent = 'All Stories Loaded';
-      const icon = loadMoreBtn.querySelector('svg');
-      if (icon) icon.style.display = 'none';
+async function loadDynamicStories(storiesGrid, loadMoreBtn) {
+  let stories = null;
+  const API_BASE = (window.location.protocol === 'file:' || (window.location.port && window.location.port !== '3000'))
+    ? 'http://localhost:3000'
+    : '';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/stories`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.stories && Array.isArray(data.stories) && data.stories.length > 0) {
+        stories = data.stories;
+      }
     }
-  });
+  } catch (e) {
+    // Standalone static fallback
+  }
+
+  if (!stories) {
+    const local = localStorage.getItem('mc_custom_stories');
+    if (local) {
+      try {
+        const parsed = JSON.parse(local);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          stories = parsed;
+        }
+      } catch (e) {}
+    }
+  }
+
+  // If dynamic stories are present, render them into storiesGrid
+  if (stories && stories.length > 0) {
+    storiesGrid.innerHTML = stories.map((story, index) => {
+      const isHidden = index >= 6;
+      const orientation = story.orientation === 'portrait' ? 'portrait' : 'landscape';
+      const webpSource = story.webpUrl ? `<source srcset="${story.webpUrl}" type="image/webp">` : '';
+
+      return `
+        <div class="story-card format-${orientation} ${isHidden ? 'story-item-hidden' : ''}" data-orientation="${orientation}">
+          <div class="story-img-wrap">
+            <picture>
+              ${webpSource}
+              <img src="${story.imageUrl}" alt="${story.alt || 'Moment Captured Story'}" class="story-img" loading="lazy" decoding="async" onerror="this.src='src/scroll-images/img (1).jpg'">
+            </picture>
+            <button type="button" class="story-expand-btn" title="Expand Image" aria-label="Expand Image">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Sync Load More button state
+    if (loadMoreBtn) {
+      const remaining = storiesGrid.querySelectorAll('.story-item-hidden');
+      if (remaining.length === 0) {
+        loadMoreBtn.classList.add('all-loaded');
+        const btnText = loadMoreBtn.querySelector('.btn-text');
+        if (btnText) btnText.textContent = 'All Stories Loaded';
+        const icon = loadMoreBtn.querySelector('svg');
+        if (icon) icon.style.display = 'none';
+      } else {
+        loadMoreBtn.classList.remove('all-loaded');
+        const btnText = loadMoreBtn.querySelector('.btn-text');
+        if (btnText) btnText.textContent = 'Load More Stories';
+        const icon = loadMoreBtn.querySelector('svg');
+        if (icon) icon.style.display = '';
+      }
+    }
+  }
 }
 
 /* ==========================================================================
